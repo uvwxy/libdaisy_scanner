@@ -53,7 +53,9 @@ public class ActivityScan extends Activity {
 
 	private LinearLayout llPhotoList = null;
 	private RelativeLayout rlBottomBox = null;
+	@SuppressWarnings("unused")
 	private RelativeLayout rlMain = null;
+	@SuppressWarnings("unused")
 	private ScrollView scrollView1 = null;
 
 	private Button btnBaro0 = null;
@@ -69,12 +71,19 @@ public class ActivityScan extends Activity {
 
 	private EditText etLandmarks = null;
 	private EditText etNodeId = null;
+	@SuppressWarnings("unused")
 	private TextView lblBaro0 = null;
+	@SuppressWarnings("unused")
 	private TextView lblBaro1 = null;
+	@SuppressWarnings("unused")
 	private TextView lblId = null;
+	@SuppressWarnings("unused")
 	private TextView lblLandmarks = null;
+	@SuppressWarnings("unused")
 	private TextView lblLocation = null;
+	@SuppressWarnings("unused")
 	private TextView lblNodeOrientation = null;
+	@SuppressWarnings("unused")
 	private TextView lblPhotos = null;
 	private TextView tvBaro0Info = null;
 	private TextView tvBaro1Info = null;
@@ -216,8 +225,8 @@ public class ActivityScan extends Activity {
 		btnPhotos.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mLastTakenImagePath = FileTools.getAndCreateExternalFolder(CREATE_IMAGES_FOLDER) + etNodeId.getText().toString() + "_"
-						+ System.currentTimeMillis() + ".jpg";
+				mLastTakenImagePath = FileTools.getAndCreateExternalFolder(CREATE_IMAGES_FOLDER)
+						+ etNodeId.getText().toString() + "_" + System.currentTimeMillis() + ".jpg";
 				IntentTools.captureImage(ctx, mLastTakenImagePath, INTENT_TAKE_IMAGE);
 			}
 		});
@@ -273,8 +282,11 @@ public class ActivityScan extends Activity {
 					// br.addFilter(new LowPassFilter());
 				}
 
-				progressDialogBaro0 = ProgressDialog.show(ctx, "Please wait",
-						"Hold your device as close as possible to the ground.\n\nRecording measurement after 4 seconds", true);
+				progressDialogBaro0 = ProgressDialog
+						.show(ctx,
+								"Please wait",
+								"Hold your device as close as possible to the ground.\n\nRecording measurement after 4 seconds",
+								true);
 				br0.startReading();
 			}
 		});
@@ -296,7 +308,8 @@ public class ActivityScan extends Activity {
 								nodeHeight = BarometerReader.getHeightFromDiff(baro1[0], baro0[0]);
 							}
 
-							String format = String.format("Value: %.2f mBar \nDevice height above ground: %.2f m", f[0], nodeHeight);
+							String format = String.format("Value: %.2f mBar \nDevice height above ground: %.2f m",
+									f[0], nodeHeight);
 							ViewTools.updateViewOnUIThread(ctx, tvBaro1Info, format);
 							progressDialogBaro1.dismiss();
 						}
@@ -336,8 +349,8 @@ public class ActivityScan extends Activity {
 
 					@Override
 					public void status(Location l) {
-						String format = String.format("Waiting: lat/lon: %.2f / %.2f\nAccuracy: %.2f\nAltitude: %.2f", l.getLatitude(), l.getLongitude(),
-								l.getAccuracy(), l.getAltitude());
+						String format = String.format("Waiting: lat/lon: %.2f / %.2f\nAccuracy: %.2f\nAltitude: %.2f",
+								l.getLatitude(), l.getLongitude(), l.getAccuracy(), l.getAltitude());
 						ViewTools.updateViewOnUIThread(ctx, tvLocation, format);
 						nodeLocation = l;
 					}
@@ -348,8 +361,9 @@ public class ActivityScan extends Activity {
 					public void result(Location l) {
 						nodeLocation = l;
 						if (l != null) {
-							String format = String.format("Location: lat/lon: %.2f / %.2f\nAccuracy: %.2f\nAltitude: %.2f", l.getLatitude(), l.getLongitude(),
-									l.getAccuracy(), l.getAltitude());
+							String format = String.format(
+									"Location: lat/lon: %.2f / %.2f\nAccuracy: %.2f\nAltitude: %.2f", l.getLatitude(),
+									l.getLongitude(), l.getAccuracy(), l.getAltitude());
 							ViewTools.updateViewOnUIThread(ctx, tvLocation, format);
 						} else {
 							ViewTools.updateViewOnUIThread(ctx, tvLocation, "Failed to obtain location fix");
@@ -496,7 +510,8 @@ public class ActivityScan extends Activity {
 						FileTools.copy(new File(originalFilePath), new File(copyOfFilePath));
 					} catch (IOException e) {
 						e.printStackTrace();
-						Toast.makeText(ctx, "Failed to copy file to deployment folder:\n" + copyOfFilePath, Toast.LENGTH_LONG).show();
+						Toast.makeText(ctx, "Failed to copy file to deployment folder:\n" + copyOfFilePath,
+								Toast.LENGTH_LONG).show();
 						return;
 					}
 
@@ -524,7 +539,7 @@ public class ActivityScan extends Activity {
 			break;
 		case INTENT_SCAN_QR_CODE:
 			String contents = intent.getStringExtra("SCAN_RESULT");
-			String format = intent.getStringExtra(Intents.Scan.RESULT_ORIENTATION);
+			// String format = intent.getStringExtra(Intents.Scan.RESULT_ORIENTATION);
 
 			// if (!format.equals("QR_CODE")) {
 			// ViewTools.updateViewOnUIThread(ctx, tvId,
@@ -540,12 +555,10 @@ public class ActivityScan extends Activity {
 			qrBearing = qrBearing % 360;
 
 			ResultPoint[] resultPoints;
-			String pts = "";
 			if (points != null && points.length > 0) {
 				resultPoints = new ResultPoint[points.length / 2];
 				for (int i = 0; i < points.length; i += 2) {
 					resultPoints[i / 2] = new ResultPoint(points[i], points[i + 1]);
-					pts += "\n" + points[i] + "/" + points[i + 1];
 				}
 			}
 
@@ -557,7 +570,8 @@ public class ActivityScan extends Activity {
 
 			String strComp = String.format("Values: %.0f°", qrOrientationData[0]);
 
-			ViewTools.updateViewOnUIThread(ctx, tvId, "Content: " + qrValue + "\nRotation: " + qrBearing + "\nCompass: " + strComp);
+			ViewTools.updateViewOnUIThread(ctx, tvId, "Content: " + qrValue + "\nRotation: " + qrBearing
+					+ "\nCompass: " + strComp);
 
 			break;
 		default:
@@ -600,7 +614,8 @@ public class ActivityScan extends Activity {
 					etNodeId.requestFocus();
 				}
 			});
-			alertDialog.setMessage("Node without a valid ID will not be returned\n\nEither scan a node id or enter one manually.");
+			alertDialog
+					.setMessage("Node without a valid ID will not be returned\n\nEither scan a node id or enter one manually.");
 			alertDialog.setTitle("Node Scanner");
 			alertDialog.show();
 			return;
